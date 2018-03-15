@@ -37,6 +37,7 @@ class DeserializedParameterizedType(private val rawType: Class<*>, private val p
         const val MAX_DEPTH: Int = 32
 
         fun make(name: String, cl: ClassLoader = DeserializedParameterizedType::class.java.classLoader): Type {
+            println ("Des make")
             val paramTypes = ArrayList<Type>()
             val pos = parseTypeList("$name>", paramTypes, cl)
             if (pos <= name.length) {
@@ -112,6 +113,7 @@ class DeserializedParameterizedType(private val rawType: Class<*>, private val p
         }
 
         private fun makeType(typeName: String, cl: ClassLoader): Type {
+            println ("makeType - $typeName")
             // Not generic
             return if (typeName == "?") SerializerFactory.AnyType else {
                 Primitives.wrap(SerializerFactory.primitiveType(typeName) ?: Class.forName(typeName, false, cl))

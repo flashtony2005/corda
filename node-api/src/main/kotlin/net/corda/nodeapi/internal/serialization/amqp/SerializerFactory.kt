@@ -220,6 +220,7 @@ open class SerializerFactory(
      * if not, use the [ClassCarpenter] to generate a class to use in it's place.
      */
     private fun processSchema(schemaAndDescriptor: FactorySchemaAndDescriptor, sentinel: Boolean = false) {
+        println ("processSchema")
         val metaSchema = CarpenterMetaSchema.newInstance()
         for (typeNotation in schemaAndDescriptor.schemas.schema.types) {
             try {
@@ -231,6 +232,7 @@ open class SerializerFactory(
                     getEvolutionSerializer(typeNotation, serialiser, schemaAndDescriptor.schemas)
                 }
             } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
                 if (sentinel) throw e
                 metaSchema.buildFor(typeNotation, classloader)
             }
@@ -360,6 +362,7 @@ open class SerializerFactory(
         }
 
         private fun typeForName(name: String, classloader: ClassLoader): Type {
+            println ("typeForName")
             return if (name.endsWith("[]")) {
                 val elementType = typeForName(name.substring(0, name.lastIndex - 1), classloader)
                 if (elementType is ParameterizedType || elementType is GenericArrayType) {
